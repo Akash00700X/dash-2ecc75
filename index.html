@@ -132,6 +132,16 @@
     text-shadow: 0 0 6px rgba(0,240,255,0.6);
   }
 
+  .team { display: flex; flex-wrap: wrap; gap: 6px; }
+  .member {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 0.76rem; padding: 2px 8px; border-radius: 2px;
+    border: 1px solid rgba(157, 77, 255, 0.45);
+    background: rgba(157, 77, 255, 0.08);
+  }
+  .member .role { font-family: var(--mono); color: var(--violet); letter-spacing: 0.08em; text-shadow: 0 0 6px rgba(157,77,255,0.5); }
+  .member .name { color: var(--text-primary); font-weight: 600; }
+
   .deadline { font-size: 0.82rem; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; font-family: var(--mono); }
   .deadline .due-soon { color: var(--amber); text-shadow: 0 0 8px rgba(255,200,50,0.7); }
   .deadline .overdue  { color: var(--hotred); text-shadow: 0 0 8px rgba(255,56,96,0.8); }
@@ -250,6 +260,9 @@ function render(data) {
   document.getElementById('cards').innerHTML = sorted.length ? sorted.map(p => {
     const st = STATUS[p.status] || { label: p.status, cls: '' };
     const prog = Math.max(0, Math.min(100, Number(p.progress) || 0));
+    const team = (p.team || []).map(m =>
+      `<span class="member"><span class="role">${esc(m.role)}</span><span class="name">${esc(m.name)}</span></span>`
+    ).join('');
     const tasks = (p.tasks || []).map(t =>
       `<li class="${t.done ? 'done' : ''}"><span class="box">${t.done ? '✓' : ''}</span><span class="txt">${esc(t.text)}</span></li>`
     ).join('');
@@ -262,6 +275,7 @@ function render(data) {
         <div class="progress-track"><div class="progress-fill ${prog >= 100 ? 'full' : ''}" style="width:${prog}%"></div></div>
         <span class="progress-num">${prog}%</span>
       </div>
+      ${team ? `<div class="team">${team}</div>` : ''}
       ${deadlineHtml(p.deadline, p.status)}
       ${tasks ? `<ul class="tasks">${tasks}</ul>` : ''}
       ${notes ? `<div class="notes">${notes}</div>` : ''}
