@@ -1,0 +1,63 @@
+{
+  "updated": "2026-07-14T17:04:05+08:00",
+  "projects": [
+    {
+      "id": "demo-1",
+      "name": "範例專案：客戶 AI Agent 導入",
+      "status": "active",
+      "progress": 60,
+      "deadline": "2026-07-31",
+      "tasks": [
+        {
+          "text": "完成需求訪談",
+          "done": true
+        },
+        {
+          "text": "產出適配性報告",
+          "done": true
+        },
+        {
+          "text": "報價單送出",
+          "done": false
+        },
+        {
+          "text": "簽約",
+          "done": false
+        }
+      ],
+      "notes": [
+        {
+          "date": "2026-07-14",
+          "text": "這是範例資料——跟猿田彥說「更新儀表板」就能改成你的真實專案"
+        },
+        {
+          "date": "2026-07-12",
+          "text": "客戶回覆報價問題，已補充說明"
+        }
+      ]
+    },
+    {
+      "id": "demo-2",
+      "name": "範例專案：官網改版",
+      "status": "paused",
+      "progress": 25,
+      "deadline": "2026-08-15",
+      "tasks": [
+        {
+          "text": "整理現有頁面內容",
+          "done": true
+        },
+        {
+          "text": "設計新首頁",
+          "done": false
+        }
+      ],
+      "notes": [
+        {
+          "date": "2026-07-10",
+          "text": "等設計師檔期，暫停一週"
+        }
+      ]
+    }
+  ]
+}
