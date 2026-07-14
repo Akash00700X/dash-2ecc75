@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-14T20:08:19+08:00",
+  "updated": "2026-07-14T20:12:00+08:00",
   "projects": [
     {
       "id": "8c983eb2",
@@ -241,10 +241,6 @@
         }
       ],
       "notes": [
-        {
-          "date": "2026-07-14",
-          "text": "活動規劃 Google Sheet: https://docs.google.com/spreadsheets/d/1MUKLBR8rJqh8seszqBlRVpr0Dbm9WfhN0L0uMdStlDo/edit?gid=694018709#gid=694018709"
-        },
         {
           "date": "2026-07-14",
           "text": "從 Google 試算表匯入"
