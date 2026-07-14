@@ -110,9 +110,11 @@
     white-space: nowrap; letter-spacing: 0.1em;
     border: 1px solid var(--text-muted); color: var(--text-muted);
   }
-  .pill.active { color: var(--cyan); border-color: var(--cyan); box-shadow: 0 0 8px rgba(0,240,255,0.4), inset 0 0 8px rgba(0,240,255,0.08); text-shadow: 0 0 6px rgba(0,240,255,0.8); }
-  .pill.done   { color: var(--lime); border-color: var(--lime); box-shadow: 0 0 8px rgba(57,255,136,0.4), inset 0 0 8px rgba(57,255,136,0.08); text-shadow: 0 0 6px rgba(57,255,136,0.8); }
-  .pill.paused { color: var(--violet); border-color: rgba(157,77,255,0.6); text-shadow: 0 0 6px rgba(157,77,255,0.6); }
+  .pill.active   { color: var(--cyan); border-color: var(--cyan); box-shadow: 0 0 8px rgba(0,240,255,0.4), inset 0 0 8px rgba(0,240,255,0.08); text-shadow: 0 0 6px rgba(0,240,255,0.8); }
+  .pill.done     { color: var(--lime); border-color: var(--lime); box-shadow: 0 0 8px rgba(57,255,136,0.4), inset 0 0 8px rgba(57,255,136,0.08); text-shadow: 0 0 6px rgba(57,255,136,0.8); }
+  .pill.pending  { color: var(--amber); border-color: rgba(255,200,50,0.6); box-shadow: 0 0 8px rgba(255,200,50,0.3); text-shadow: 0 0 6px rgba(255,200,50,0.7); }
+  .pill.tracking { color: var(--violet); border-color: rgba(157,77,255,0.6); box-shadow: 0 0 8px rgba(157,77,255,0.3); text-shadow: 0 0 6px rgba(157,77,255,0.6); }
+  .pill.paused   { color: var(--text-muted); border-color: var(--text-muted); }
 
   .progress-row { display: flex; align-items: center; gap: 10px; }
   .progress-track {
@@ -205,9 +207,11 @@
 
 <script>
 const STATUS = {
-  active: { label: 'ACTIVE 進行中', cls: 'active' },
-  done:   { label: 'DONE 已完成', cls: 'done' },
-  paused: { label: 'PAUSED 暫停', cls: 'paused' }
+  active:   { label: 'ACTIVE 進行中', cls: 'active' },
+  pending:  { label: 'PENDING 待確認', cls: 'pending' },
+  tracking: { label: 'TRACKING 長期追蹤', cls: 'tracking' },
+  paused:   { label: 'PAUSED 暫緩', cls: 'paused' },
+  done:     { label: 'DONE 已完成', cls: 'done' }
 };
 
 function esc(s) {
@@ -254,7 +258,7 @@ function render(data) {
   dueEl.textContent = dueSoon;
   dueEl.classList.toggle('alert', dueSoon > 0);
 
-  const order = { active: 0, paused: 1, done: 2 };
+  const order = { active: 0, pending: 1, tracking: 2, paused: 3, done: 4 };
   const sorted = [...projects].sort((a, b) => (order[a.status] ?? 9) - (order[b.status] ?? 9));
 
   document.getElementById('cards').innerHTML = sorted.length ? sorted.map(p => {

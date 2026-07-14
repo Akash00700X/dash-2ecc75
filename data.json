@@ -1,40 +1,12 @@
 {
-  "updated": "2026-07-14T18:05:48+08:00",
+  "updated": "2026-07-14T19:55:40+08:00",
   "projects": [
     {
-      "id": "demo-1",
-      "name": "範例專案：客戶 AI Agent 導入",
+      "id": "8c983eb2",
+      "name": "營業稅收尾",
       "status": "active",
-      "progress": 60,
-      "deadline": "2026-07-31",
-      "tasks": [
-        {
-          "text": "完成需求訪談",
-          "done": true
-        },
-        {
-          "text": "產出適配性報告",
-          "done": true
-        },
-        {
-          "text": "報價單送出",
-          "done": false
-        },
-        {
-          "text": "簽約",
-          "done": false
-        }
-      ],
-      "notes": [
-        {
-          "date": "2026-07-14",
-          "text": "這是範例資料——跟猿田彥說「更新儀表板」就能改成你的真實專案"
-        },
-        {
-          "date": "2026-07-12",
-          "text": "客戶回覆報價問題，已補充說明"
-        }
-      ],
+      "progress": 33,
+      "deadline": "",
       "team": [
         {
           "role": "PM",
@@ -42,44 +14,498 @@
         },
         {
           "role": "工程師",
-          "name": "Hank"
+          "name": "Kevin"
         }
-      ]
-    },
-    {
-      "id": "demo-2",
-      "name": "範例專案：官網改版",
-      "status": "paused",
-      "progress": 25,
-      "deadline": "2026-08-15",
+      ],
       "tasks": [
         {
-          "text": "整理現有頁面內容",
+          "text": "完成階段性電子發票流程",
           "done": true
         },
         {
-          "text": "設計新首頁",
+          "text": "找時間確認電子發票段上傳方式",
+          "done": false
+        },
+        {
+          "text": "手寫部分自動化",
           "done": false
         }
       ],
       "notes": [
         {
           "date": "2026-07-14",
-          "text": "儀表板已上線，之後跟猿田彥說話即可更新"
+          "text": "從 Google 試算表匯入"
         },
         {
-          "date": "2026-07-10",
-          "text": "等設計師檔期，暫停一週"
+          "date": "2026-07-14",
+          "text": "已交付：合約、報價單"
         }
-      ],
+      ]
+    },
+    {
+      "id": "bab70973",
+      "name": "內部帳務自動化",
+      "status": "paused",
+      "progress": 33,
+      "deadline": "",
       "team": [
         {
           "role": "PM",
-          "name": "Carol"
+          "name": "Akash"
         },
         {
-          "role": "設計師",
-          "name": "外包設計師"
+          "role": "工程師",
+          "name": "小球"
+        }
+      ],
+      "tasks": [
+        {
+          "text": "了解第1階段內容，總共有5段",
+          "done": true
+        },
+        {
+          "text": "跟小球討論，並且產出預計時程",
+          "done": false
+        },
+        {
+          "text": "提醒Alex建制內部電腦",
+          "done": false
+        }
+      ],
+      "notes": [
+        {
+          "date": "2026-07-14",
+          "text": "從 Google 試算表匯入"
+        },
+        {
+          "date": "2026-07-14",
+          "text": "已交付：合約、報價單"
+        }
+      ]
+    },
+    {
+      "id": "c62eb299",
+      "name": "Hannah說明退款",
+      "status": "pending",
+      "progress": 50,
+      "deadline": "",
+      "team": [
+        {
+          "role": "PM",
+          "name": "Akash"
+        },
+        {
+          "role": "工程師",
+          "name": "小球"
+        }
+      ],
+      "tasks": [
+        {
+          "text": "等Alex跟對方說明",
+          "done": true
+        },
+        {
+          "text": "跟小球確認知識萃取加入難度",
+          "done": false
+        }
+      ],
+      "notes": [
+        {
+          "date": "2026-07-14",
+          "text": "從 Google 試算表匯入"
+        },
+        {
+          "date": "2026-07-14",
+          "text": "已交付：合約、報價單"
+        }
+      ]
+    },
+    {
+      "id": "282fd88e",
+      "name": "阿凱更新",
+      "status": "tracking",
+      "progress": 25,
+      "deadline": "",
+      "team": [
+        {
+          "role": "PM",
+          "name": "Akash"
+        },
+        {
+          "role": "工程師",
+          "name": "小球"
+        }
+      ],
+      "tasks": [
+        {
+          "text": "持續優化調整",
+          "done": true
+        },
+        {
+          "text": "及時回覆確認",
+          "done": false
+        },
+        {
+          "text": "LineOA轉移 速約",
+          "done": false
+        },
+        {
+          "text": "每週定期會議",
+          "done": false
+        }
+      ],
+      "notes": [
+        {
+          "date": "2026-07-14",
+          "text": "從 Google 試算表匯入"
+        },
+        {
+          "date": "2026-07-14",
+          "text": "已交付：合約、報價單"
+        }
+      ]
+    },
+    {
+      "id": "80c56ea3",
+      "name": "官網調整優化",
+      "status": "tracking",
+      "progress": 33,
+      "deadline": "",
+      "team": [
+        {
+          "role": "PM",
+          "name": "Akash"
+        },
+        {
+          "role": "工程師",
+          "name": "Akash"
+        }
+      ],
+      "tasks": [
+        {
+          "text": "修改大主題",
+          "done": true
+        },
+        {
+          "text": "補上陽明山活動",
+          "done": false
+        },
+        {
+          "text": "更新15 22活動在7月的",
+          "done": false
+        }
+      ],
+      "notes": [
+        {
+          "date": "2026-07-14",
+          "text": "從 Google 試算表匯入"
+        }
+      ]
+    },
+    {
+      "id": "f6970b16",
+      "name": "7/15 7/22活動確認",
+      "status": "tracking",
+      "progress": 20,
+      "deadline": "",
+      "team": [
+        {
+          "role": "PM",
+          "name": "Akash"
+        },
+        {
+          "role": "工程師",
+          "name": "Akash"
+        }
+      ],
+      "tasks": [
+        {
+          "text": "上架ACCUPASS",
+          "done": true
+        },
+        {
+          "text": "細節和動線規劃",
+          "done": false
+        },
+        {
+          "text": "吃的喝的",
+          "done": false
+        },
+        {
+          "text": "回饋問卷",
+          "done": false
+        },
+        {
+          "text": "報名問卷",
+          "done": false
+        }
+      ],
+      "notes": [
+        {
+          "date": "2026-07-14",
+          "text": "從 Google 試算表匯入"
+        }
+      ]
+    },
+    {
+      "id": "de9e5296",
+      "name": "8/22活動確認",
+      "status": "tracking",
+      "progress": 25,
+      "deadline": "",
+      "team": [
+        {
+          "role": "PM",
+          "name": "Akash"
+        },
+        {
+          "role": "工程師",
+          "name": "Akash"
+        }
+      ],
+      "tasks": [
+        {
+          "text": "有初步時程表和成本表",
+          "done": true
+        },
+        {
+          "text": "確認講者資訊還有題目",
+          "done": false
+        },
+        {
+          "text": "確定場地",
+          "done": false
+        },
+        {
+          "text": "演出型態確認",
+          "done": false
+        }
+      ],
+      "notes": [
+        {
+          "date": "2026-07-14",
+          "text": "從 Google 試算表匯入"
+        }
+      ]
+    },
+    {
+      "id": "83fd038b",
+      "name": "內部產品產出應用",
+      "status": "tracking",
+      "progress": 50,
+      "deadline": "",
+      "team": [
+        {
+          "role": "PM",
+          "name": "Akash"
+        },
+        {
+          "role": "工程師",
+          "name": "Kevin"
+        }
+      ],
+      "tasks": [
+        {
+          "text": "產出第一版DEMO",
+          "done": true
+        },
+        {
+          "text": "透過第一場銷講來取得第一批客人",
+          "done": false
+        }
+      ],
+      "notes": [
+        {
+          "date": "2026-07-14",
+          "text": "從 Google 試算表匯入"
+        }
+      ]
+    },
+    {
+      "id": "f07e711e",
+      "name": "全居逸專案",
+      "status": "active",
+      "progress": 50,
+      "deadline": "",
+      "team": [
+        {
+          "role": "PM",
+          "name": "Akash"
+        },
+        {
+          "role": "工程師",
+          "name": "小球"
+        }
+      ],
+      "tasks": [
+        {
+          "text": "分3個月進行最多5個項目，客服,知識庫>財會>業助",
+          "done": true
+        },
+        {
+          "text": "進行第一個月工程針對 客服還有知識庫",
+          "done": false
+        }
+      ],
+      "notes": [
+        {
+          "date": "2026-07-14",
+          "text": "從 Google 試算表匯入"
+        },
+        {
+          "date": "2026-07-14",
+          "text": "已交付：合約、報價單"
+        }
+      ]
+    },
+    {
+      "id": "384472a6",
+      "name": "隆志工業",
+      "status": "pending",
+      "progress": 67,
+      "deadline": "",
+      "team": [
+        {
+          "role": "PM",
+          "name": "Akash"
+        },
+        {
+          "role": "工程師",
+          "name": "Luka"
+        }
+      ],
+      "tasks": [
+        {
+          "text": "提供合約書",
+          "done": true
+        },
+        {
+          "text": "建立第一組功能應用：OCR+機器人＋後台報表",
+          "done": true
+        },
+        {
+          "text": "等待客戶回應",
+          "done": false
+        }
+      ],
+      "notes": [
+        {
+          "date": "2026-07-14",
+          "text": "從 Google 試算表匯入"
+        },
+        {
+          "date": "2026-07-14",
+          "text": "已交付：合約、報價單"
+        }
+      ]
+    },
+    {
+      "id": "59bc7628",
+      "name": "Celine 身心靈",
+      "status": "pending",
+      "progress": 50,
+      "deadline": "",
+      "team": [
+        {
+          "role": "PM",
+          "name": "老魚"
+        },
+        {
+          "role": "工程師",
+          "name": "小球"
+        }
+      ],
+      "tasks": [
+        {
+          "text": "約好7/15 11點訪談",
+          "done": true
+        },
+        {
+          "text": "訪談",
+          "done": false
+        }
+      ],
+      "notes": [
+        {
+          "date": "2026-07-14",
+          "text": "從 Google 試算表匯入"
+        }
+      ]
+    },
+    {
+      "id": "ea4cd595",
+      "name": "宸大股份",
+      "status": "pending",
+      "progress": 33,
+      "deadline": "",
+      "team": [
+        {
+          "role": "PM",
+          "name": "Akash"
+        },
+        {
+          "role": "工程師",
+          "name": "Luka"
+        }
+      ],
+      "tasks": [
+        {
+          "text": "初步訪談",
+          "done": true
+        },
+        {
+          "text": "簽署NDA",
+          "done": false
+        },
+        {
+          "text": "快速驗證第一個功能",
+          "done": false
+        }
+      ],
+      "notes": [
+        {
+          "date": "2026-07-14",
+          "text": "從 Google 試算表匯入"
+        }
+      ]
+    },
+    {
+      "id": "1552cb07",
+      "name": "cosmo本身需求",
+      "status": "pending",
+      "progress": 0,
+      "deadline": "",
+      "team": [
+        {
+          "role": "PM",
+          "name": "Akash"
+        }
+      ],
+      "tasks": [],
+      "notes": [
+        {
+          "date": "2026-07-14",
+          "text": "從 Google 試算表匯入"
+        }
+      ]
+    },
+    {
+      "id": "f58c2a9a",
+      "name": "越南飯店",
+      "status": "pending",
+      "progress": 0,
+      "deadline": "",
+      "team": [
+        {
+          "role": "PM",
+          "name": "Akash"
+        }
+      ],
+      "tasks": [],
+      "notes": [
+        {
+          "date": "2026-07-14",
+          "text": "從 Google 試算表匯入"
         }
       ]
     }
