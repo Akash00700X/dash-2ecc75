@@ -215,6 +215,11 @@
     box-shadow: 0 0 10px rgba(255,46,196,0.45), inset 0 0 10px rgba(255,46,196,0.08);
     text-shadow: 0 0 6px rgba(255,46,196,0.8);
   }
+  .vb-btn.st-active.on   { color: var(--cyan); border-color: var(--cyan); box-shadow: 0 0 10px rgba(0,240,255,0.45), inset 0 0 10px rgba(0,240,255,0.08); text-shadow: 0 0 6px rgba(0,240,255,0.8); }
+  .vb-btn.st-pending.on  { color: var(--amber); border-color: var(--amber); box-shadow: 0 0 10px rgba(255,200,50,0.45), inset 0 0 10px rgba(255,200,50,0.08); text-shadow: 0 0 6px rgba(255,200,50,0.8); }
+  .vb-btn.st-tracking.on { color: var(--violet); border-color: var(--violet); box-shadow: 0 0 10px rgba(157,77,255,0.45), inset 0 0 10px rgba(157,77,255,0.08); text-shadow: 0 0 6px rgba(157,77,255,0.8); }
+  .vb-btn.st-paused.on   { color: var(--text-secondary); border-color: var(--text-secondary); box-shadow: 0 0 10px rgba(143,163,200,0.35), inset 0 0 10px rgba(143,163,200,0.06); }
+  .vb-btn.st-done.on     { color: var(--lime); border-color: var(--lime); box-shadow: 0 0 10px rgba(57,255,136,0.45), inset 0 0 10px rgba(57,255,136,0.08); text-shadow: 0 0 6px rgba(57,255,136,0.8); }
   .vb-btn .cnt { color: var(--text-muted); margin-left: 5px; font-size: 0.7rem; }
   .vb-btn.on .cnt { color: inherit; opacity: 0.75; }
   .vb-hint { font-size: 0.78rem; color: var(--text-secondary); font-family: var(--mono); letter-spacing: 0.05em; }
@@ -281,6 +286,7 @@
   <div class="viewbar" id="viewbar">
     <div class="vb-row" id="vb-roles"></div>
     <div class="vb-row" id="vb-names" style="display:none"></div>
+    <div class="vb-row" id="vb-status"></div>
     <div class="vb-hint" id="vb-hint" style="display:none"></div>
   </div>
 
@@ -327,8 +333,8 @@ function deadlineHtml(dateStr, status) {
   return `<div class="deadline">▸ 截止 ${esc(dateStr)} ${extra}</div>`;
 }
 
-// 檢視角度：view.role = 選中的角色（如 PM／工程師），view.name = 選中的人名
-const view = { role: null, name: null };
+// 檢視角度：view.role = 選中的角色（如 PM／工程師），view.name = 選中的人名，view.status = 選中的專案狀態
+const view = { role: null, name: null, status: null };
 let lastData = null;
 
 function projectsOf(projects, role, name) {
@@ -378,13 +384,37 @@ function renderViewbar(projects) {
     namesEl.innerHTML = '';
   }
 
-  if (view.role && view.name) {
-    const cnt = projectsOf(projects, view.role, view.name).length;
+  // 狀態列：五種狀態比照角色做切換，附各自的專案數
+  const statusEl = document.getElementById('vb-status');
+  statusEl.innerHTML = '<span class="vb-label">狀態 ▸</span>' +
+    `<button class="vb-btn ${view.status === null ? 'on' : ''}" data-status="">全部</button>` +
+    Object.keys(STATUS).map(s =>
+      `<button class="vb-btn st-${s} ${view.status === s ? 'on' : ''}" data-status="${s}">${esc(STATUS[s].label)}<span class="cnt">×${projects.filter(p => p.status === s).length}</span></button>`
+    ).join('');
+  statusEl.querySelectorAll('.vb-btn').forEach(btn => {
+    btn.onclick = () => {
+      view.status = btn.dataset.status || null;
+      if (lastData) render(lastData);
+    };
+  });
+
+  const parts = [];
+  if (view.role && view.name) parts.push(`<span class="who">${esc(view.name)}</span>（${esc(view.role)}）`);
+  if (view.status) parts.push(`<span class="who">${esc(STATUS[view.status].label)}</span>`);
+  if (parts.length) {
+    const cnt = matchedProjects(projects).length;
     hintEl.style.display = '';
-    hintEl.innerHTML = `▍<span class="who">${esc(view.name)}</span>（${esc(view.role)}）負責 ${cnt} 個專案`;
+    hintEl.innerHTML = `▍${parts.join(' ＋ ')}：共 ${cnt} 個專案`;
   } else {
     hintEl.style.display = 'none';
   }
+}
+
+// 依目前檢視角度（人名＋狀態可疊加）篩選專案
+function matchedProjects(projects) {
+  return projects.filter(p =>
+    (!(view.role && view.name) || (p.team || []).some(m => m.role === view.role && m.name === view.name)) &&
+    (!view.status || p.status === view.status));
 }
 
 function renderAlex(data) {
@@ -427,17 +457,16 @@ function render(data) {
   const order = { active: 0, pending: 1, tracking: 2, paused: 3, done: 4 };
   let sorted = [...projects].sort((a, b) => (order[a.status] ?? 9) - (order[b.status] ?? 9));
 
-  // 依檢視角度篩選：選了人名 → 只列出他負責的專案
-  const filtering = view.role && view.name;
-  if (filtering) {
-    sorted = sorted.filter(p => (p.team || []).some(m => m.role === view.role && m.name === view.name));
-  }
+  // 依檢視角度篩選（人名與狀態可疊加）
+  const personSel = view.role && view.name;
+  const filtering = personSel || view.status;
+  if (filtering) sorted = matchedProjects(sorted);
 
   document.getElementById('cards').innerHTML = sorted.length ? sorted.map(p => {
     const st = STATUS[p.status] || { label: p.status, cls: '' };
     const prog = Math.max(0, Math.min(100, Number(p.progress) || 0));
     const team = (p.team || []).map(m => {
-      const hit = filtering && m.role === view.role && m.name === view.name;
+      const hit = personSel && m.role === view.role && m.name === view.name;
       return `<span class="member ${hit ? 'hit' : ''}"><span class="role">${esc(m.role)}</span><span class="name">${esc(m.name)}</span></span>`;
     }).join('');
     const tasks = (p.tasks || []).map(t =>
@@ -458,7 +487,7 @@ function render(data) {
       ${notes ? `<div class="notes">${notes}</div>` : ''}
     </div>`;
   }).join('') : (filtering
-    ? `<div class="empty">${esc(view.name)} 目前沒有負責中的專案</div>`
+    ? '<div class="empty">目前的檢視角度下沒有符合的專案</div>'
     : '<div class="empty">目前沒有專案，跟猿田彥說「新增專案」開始吧</div>');
 
   const feed = projects
