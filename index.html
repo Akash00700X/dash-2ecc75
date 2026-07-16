@@ -179,6 +179,58 @@
   .feed-item .p { color: var(--cyan); font-weight: 600; white-space: nowrap; text-shadow: 0 0 6px rgba(0,240,255,0.5); }
   .feed-item .t { color: var(--text-secondary); }
 
+  .viewbar {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 4px;
+    padding: 14px 16px; margin-bottom: 4px;
+    display: flex; flex-direction: column; gap: 10px;
+    position: relative;
+    box-shadow: 0 0 22px rgba(255, 46, 196, 0.05);
+    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+  }
+  .viewbar::before {
+    content: ""; position: absolute; top: 0; left: 0; width: 34px; height: 2px;
+    background: var(--magenta); box-shadow: 0 0 8px var(--magenta);
+  }
+  .viewbar .vb-label {
+    font-family: var(--mono); font-size: 0.72rem; color: var(--text-muted);
+    letter-spacing: 0.16em; margin-right: 4px; white-space: nowrap;
+  }
+  .vb-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  .vb-btn {
+    font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.08em;
+    padding: 5px 14px; border-radius: 2px; cursor: pointer;
+    background: transparent; border: 1px solid var(--text-muted); color: var(--text-secondary);
+    transition: all 0.2s;
+  }
+  .vb-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+  .vb-btn.on {
+    color: var(--cyan); border-color: var(--cyan);
+    box-shadow: 0 0 10px rgba(0,240,255,0.45), inset 0 0 10px rgba(0,240,255,0.08);
+    text-shadow: 0 0 6px rgba(0,240,255,0.8);
+  }
+  .vb-btn.person { border-color: rgba(157,77,255,0.5); }
+  .vb-btn.person:hover { border-color: var(--magenta); color: var(--magenta); }
+  .vb-btn.person.on {
+    color: var(--magenta); border-color: var(--magenta);
+    box-shadow: 0 0 10px rgba(255,46,196,0.45), inset 0 0 10px rgba(255,46,196,0.08);
+    text-shadow: 0 0 6px rgba(255,46,196,0.8);
+  }
+  .vb-btn .cnt { color: var(--text-muted); margin-left: 5px; font-size: 0.7rem; }
+  .vb-btn.on .cnt { color: inherit; opacity: 0.75; }
+  .vb-hint { font-size: 0.78rem; color: var(--text-secondary); font-family: var(--mono); letter-spacing: 0.05em; }
+  .vb-hint .who { color: var(--magenta); text-shadow: 0 0 6px rgba(255,46,196,0.6); }
+
+  .card.spotlight {
+    border-color: rgba(255, 46, 196, 0.65);
+    box-shadow: 0 0 26px rgba(255, 46, 196, 0.22), inset 0 0 30px rgba(255, 46, 196, 0.05);
+  }
+  .member.hit {
+    border-color: var(--magenta);
+    background: rgba(255, 46, 196, 0.12);
+    box-shadow: 0 0 10px rgba(255, 46, 196, 0.45);
+  }
+  .member.hit .role { color: var(--magenta); text-shadow: 0 0 6px rgba(255,46,196,0.7); }
+
   .empty { color: var(--text-muted); font-size: 0.9rem; padding: 30px 0; text-align: center; font-family: var(--mono); }
   footer { margin-top: 38px; font-size: 0.72rem; color: var(--text-muted); text-align: center; font-family: var(--mono); letter-spacing: 0.08em; }
 </style>
@@ -196,6 +248,13 @@
     <div class="tile"><div class="label">未完成待辦</div><div class="value" id="stat-todo">–</div></div>
     <div class="tile"><div class="label">7 天內截止</div><div class="value" id="stat-due">–</div></div>
     <div class="tile"><div class="label">已完成專案</div><div class="value" id="stat-done">–</div></div>
+  </div>
+
+  <h2>VIEW ／ 檢視角度</h2>
+  <div class="viewbar" id="viewbar">
+    <div class="vb-row" id="vb-roles"></div>
+    <div class="vb-row" id="vb-names" style="display:none"></div>
+    <div class="vb-hint" id="vb-hint" style="display:none"></div>
   </div>
 
   <h2>PROJECTS ／ 專案</h2>
@@ -241,8 +300,70 @@ function deadlineHtml(dateStr, status) {
   return `<div class="deadline">▸ 截止 ${esc(dateStr)} ${extra}</div>`;
 }
 
+// 檢視角度：view.role = 選中的角色（如 PM／工程師），view.name = 選中的人名
+const view = { role: null, name: null };
+let lastData = null;
+
+function projectsOf(projects, role, name) {
+  return projects.filter(p => (p.team || []).some(m => m.role === role && m.name === name));
+}
+
+function renderViewbar(projects) {
+  const rolesEl = document.getElementById('vb-roles');
+  const namesEl = document.getElementById('vb-names');
+  const hintEl = document.getElementById('vb-hint');
+
+  // 從資料動態收集所有角色
+  const roles = [...new Set(projects.flatMap(p => (p.team || []).map(m => m.role)))];
+  if (view.role && !roles.includes(view.role)) { view.role = null; view.name = null; }
+
+  rolesEl.innerHTML = '<span class="vb-label">角色 ▸</span>' +
+    `<button class="vb-btn ${view.role === null ? 'on' : ''}" data-role="">全部</button>` +
+    roles.map(r =>
+      `<button class="vb-btn ${view.role === r ? 'on' : ''}" data-role="${esc(r)}">${esc(r)}</button>`
+    ).join('');
+  rolesEl.querySelectorAll('.vb-btn').forEach(btn => {
+    btn.onclick = () => {
+      view.role = btn.dataset.role || null;
+      view.name = null;
+      if (lastData) render(lastData);
+    };
+  });
+
+  if (view.role) {
+    // 該角色底下的人名 + 各自負責的專案數
+    const names = [...new Set(projects.flatMap(p =>
+      (p.team || []).filter(m => m.role === view.role).map(m => m.name)))];
+    if (view.name && !names.includes(view.name)) view.name = null;
+    namesEl.style.display = '';
+    namesEl.innerHTML = `<span class="vb-label">${esc(view.role)} ▸</span>` +
+      names.map(n =>
+        `<button class="vb-btn person ${view.name === n ? 'on' : ''}" data-name="${esc(n)}">${esc(n)}<span class="cnt">×${projectsOf(projects, view.role, n).length}</span></button>`
+      ).join('');
+    namesEl.querySelectorAll('.vb-btn').forEach(btn => {
+      btn.onclick = () => {
+        view.name = view.name === btn.dataset.name ? null : btn.dataset.name;
+        if (lastData) render(lastData);
+      };
+    });
+  } else {
+    namesEl.style.display = 'none';
+    namesEl.innerHTML = '';
+  }
+
+  if (view.role && view.name) {
+    const cnt = projectsOf(projects, view.role, view.name).length;
+    hintEl.style.display = '';
+    hintEl.innerHTML = `▍<span class="who">${esc(view.name)}</span>（${esc(view.role)}）負責 ${cnt} 個專案`;
+  } else {
+    hintEl.style.display = 'none';
+  }
+}
+
 function render(data) {
+  lastData = data;
   const projects = data.projects || [];
+  renderViewbar(projects);
 
   const active = projects.filter(p => p.status === 'active').length;
   const tracking = projects.filter(p => p.status === 'tracking').length;
@@ -263,21 +384,28 @@ function render(data) {
   dueEl.classList.toggle('alert', dueSoon > 0);
 
   const order = { active: 0, pending: 1, tracking: 2, paused: 3, done: 4 };
-  const sorted = [...projects].sort((a, b) => (order[a.status] ?? 9) - (order[b.status] ?? 9));
+  let sorted = [...projects].sort((a, b) => (order[a.status] ?? 9) - (order[b.status] ?? 9));
+
+  // 依檢視角度篩選：選了人名 → 只列出他負責的專案
+  const filtering = view.role && view.name;
+  if (filtering) {
+    sorted = sorted.filter(p => (p.team || []).some(m => m.role === view.role && m.name === view.name));
+  }
 
   document.getElementById('cards').innerHTML = sorted.length ? sorted.map(p => {
     const st = STATUS[p.status] || { label: p.status, cls: '' };
     const prog = Math.max(0, Math.min(100, Number(p.progress) || 0));
-    const team = (p.team || []).map(m =>
-      `<span class="member"><span class="role">${esc(m.role)}</span><span class="name">${esc(m.name)}</span></span>`
-    ).join('');
+    const team = (p.team || []).map(m => {
+      const hit = filtering && m.role === view.role && m.name === view.name;
+      return `<span class="member ${hit ? 'hit' : ''}"><span class="role">${esc(m.role)}</span><span class="name">${esc(m.name)}</span></span>`;
+    }).join('');
     const tasks = (p.tasks || []).map(t =>
       `<li class="${t.done ? 'done' : ''}"><span class="box">${t.done ? '✓' : ''}</span><span class="txt">${esc(t.text)}</span></li>`
     ).join('');
     const notes = (p.notes || []).slice(0, 2).map(n =>
       `<div class="note"><span class="d">${esc(n.date)}</span>${esc(n.text)}</div>`
     ).join('');
-    return `<div class="card">
+    return `<div class="card ${filtering ? 'spotlight' : ''}">
       <div class="card-head"><h3>${esc(p.name)}</h3><span class="pill ${st.cls}">${esc(st.label)}</span></div>
       <div class="progress-row">
         <div class="progress-track"><div class="progress-fill ${prog >= 100 ? 'full' : ''}" style="width:${prog}%"></div></div>
@@ -288,7 +416,9 @@ function render(data) {
       ${tasks ? `<ul class="tasks">${tasks}</ul>` : ''}
       ${notes ? `<div class="notes">${notes}</div>` : ''}
     </div>`;
-  }).join('') : '<div class="empty">目前沒有專案，跟猿田彥說「新增專案」開始吧</div>';
+  }).join('') : (filtering
+    ? `<div class="empty">${esc(view.name)} 目前沒有負責中的專案</div>`
+    : '<div class="empty">目前沒有專案，跟猿田彥說「新增專案」開始吧</div>');
 
   const feed = projects
     .flatMap(p => (p.notes || []).map(n => ({ ...n, project: p.name })))
