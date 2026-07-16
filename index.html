@@ -231,6 +231,30 @@
   }
   .member.hit .role { color: var(--magenta); text-shadow: 0 0 6px rgba(255,46,196,0.7); }
 
+  .alexbox {
+    background: var(--surface); border: 1px solid rgba(255, 200, 50, 0.35); border-radius: 4px;
+    padding: 16px 18px; display: flex; flex-direction: column; gap: 8px;
+    box-shadow: 0 0 22px rgba(255, 200, 50, 0.07), inset 0 0 30px rgba(255, 200, 50, 0.02);
+    clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+    position: relative;
+  }
+  .alexbox::before {
+    content: ""; position: absolute; top: 0; left: 0; width: 46px; height: 2px;
+    background: var(--amber); box-shadow: 0 0 10px rgba(255,200,50,0.8);
+  }
+  h2.amber { color: var(--amber); text-shadow: 0 0 8px rgba(255,200,50,0.7); }
+  h2.amber::after { background: linear-gradient(90deg, rgba(255,200,50,0.5), transparent); }
+  .rem { display: flex; align-items: flex-start; gap: 10px; font-size: 0.9rem; }
+  .rem .box {
+    width: 15px; height: 15px; border-radius: 2px; border: 1px solid var(--amber);
+    flex-shrink: 0; margin-top: 4px; display: inline-flex; align-items: center; justify-content: center;
+    font-size: 11px; color: var(--page); box-shadow: 0 0 6px rgba(255,200,50,0.35);
+  }
+  .rem.done .box { background: var(--lime); border-color: var(--lime); box-shadow: 0 0 8px rgba(57,255,136,0.6); }
+  .rem.done .txt { color: var(--text-muted); text-decoration: line-through; }
+  .rem .d { color: var(--text-muted); font-family: var(--mono); font-size: 0.74rem; white-space: nowrap; margin-top: 3px; }
+  .rem-count { color: var(--amber); font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; text-shadow: 0 0 6px rgba(255,200,50,0.5); }
+
   .empty { color: var(--text-muted); font-size: 0.9rem; padding: 30px 0; text-align: center; font-family: var(--mono); }
   footer { margin-top: 38px; font-size: 0.72rem; color: var(--text-muted); text-align: center; font-family: var(--mono); letter-spacing: 0.08em; }
 </style>
@@ -249,6 +273,9 @@
     <div class="tile"><div class="label">7 天內截止</div><div class="value" id="stat-due">–</div></div>
     <div class="tile"><div class="label">已完成專案</div><div class="value" id="stat-done">–</div></div>
   </div>
+
+  <h2 class="amber">REMIND ALEX ／ 需提醒 Alex 事項 <span class="rem-count" id="rem-count"></span></h2>
+  <div class="alexbox" id="alexbox"></div>
 
   <h2>VIEW ／ 檢視角度</h2>
   <div class="viewbar" id="viewbar">
@@ -360,9 +387,23 @@ function renderViewbar(projects) {
   }
 }
 
+function renderAlex(data) {
+  const items = data.alexReminders || [];
+  // 未完成排前面，各自依日期新到舊
+  const pending = items.filter(r => !r.done).sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+  const done = items.filter(r => r.done).sort((a, b) => (b.date || '').localeCompare(a.date || '')).slice(0, 5);
+  document.getElementById('rem-count').textContent = pending.length ? `⚠ ${pending.length} 件未提醒` : '';
+  const row = r =>
+    `<div class="rem ${r.done ? 'done' : ''}"><span class="box">${r.done ? '✓' : ''}</span><span class="txt">${esc(r.text)}</span><span class="d">${esc(r.date || '')}</span></div>`;
+  document.getElementById('alexbox').innerHTML = (pending.length || done.length)
+    ? pending.map(row).join('') + done.map(row).join('')
+    : '<div class="empty">目前沒有要提醒 Alex 的事項，跟猿田彥說「提醒 Alex …」新增</div>';
+}
+
 function render(data) {
   lastData = data;
   const projects = data.projects || [];
+  renderAlex(data);
   renderViewbar(projects);
 
   const active = projects.filter(p => p.status === 'active').length;
