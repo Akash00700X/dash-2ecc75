@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-30T10:51:25+08:00",
+  "updated": "2026-07-30T10:51:32+08:00",
   "projects": [
     {
       "id": "8c983eb2",
@@ -107,7 +107,7 @@
       "id": "c62eb299",
       "name": "Hannah說明退款",
       "status": "active",
-      "progress": 50,
+      "progress": 80,
       "deadline": "2026-08-01",
       "team": [
         {
