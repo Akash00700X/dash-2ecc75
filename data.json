@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-30T10:43:36+08:00",
+  "updated": "2026-07-30T10:43:41+08:00",
   "projects": [
     {
       "id": "8c983eb2",
@@ -598,6 +598,10 @@
         }
       ],
       "notes": [
+        {
+          "date": "2026-07-30",
+          "text": "重點：比較 Google Vision API、AWS Textract、Azure OCR、Tesseract/ppocr；估算每張/每千頁成本與效能。"
+        },
         {
           "date": "2026-07-30",
           "text": "建立專案"
