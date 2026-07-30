@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-30T10:46:34+08:00",
+  "updated": "2026-07-30T10:46:39+08:00",
   "projects": [
     {
       "id": "8c983eb2",
@@ -225,8 +225,8 @@
     {
       "id": "f6970b16",
       "name": "7/15 活動確認",
-      "status": "tracking",
-      "progress": 40,
+      "status": "done",
+      "progress": 100,
       "deadline": "",
       "team": [
         {
