@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-30T10:47:25+08:00",
+  "updated": "2026-07-30T10:47:31+08:00",
   "projects": [
     {
       "id": "8c983eb2",
@@ -588,30 +588,6 @@
       "notes": [
         {
           "date": "2026-07-14",
-          "text": "建立專案"
-        }
-      ]
-    },
-    {
-      "id": "ca1f5d36",
-      "name": "莊會計",
-      "status": "active",
-      "progress": 0,
-      "deadline": "",
-      "team": [],
-      "tasks": [
-        {
-          "text": "評估 OCR 使用模式與成本（本地/雲端 API/混合），含每月量估與效能需求",
-          "done": false
-        }
-      ],
-      "notes": [
-        {
-          "date": "2026-07-30",
-          "text": "重點：比較 Google Vision API、AWS Textract、Azure OCR、Tesseract/ppocr；估算每張/每千頁成本與效能。"
-        },
-        {
-          "date": "2026-07-30",
           "text": "建立專案"
         }
       ]
