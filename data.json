@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-30T10:47:19+08:00",
+  "updated": "2026-07-30T10:47:25+08:00",
   "projects": [
     {
       "id": "8c983eb2",
@@ -44,6 +44,10 @@
         }
       ],
       "notes": [
+        {
+          "date": "2026-07-30",
+          "text": "比較 Google Vision API、AWS Textract、Azure OCR、Tesseract/ppocr；估算每張/每千頁成本與效能。"
+        },
         {
           "date": "2026-07-16",
           "text": "下一步：取得樣本後，跑3種掃描品質（300/200/150dpi），以Tesseract/Whisper OCR比對欄位正確率與漏字率。"
