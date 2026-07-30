@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-30T10:49:42+08:00",
+  "updated": "2026-07-30T10:49:49+08:00",
   "projects": [
     {
       "id": "8c983eb2",
@@ -130,7 +130,7 @@
         },
         {
           "text": "跟 Hank 拿 Debut 原始檔的位置",
-          "done": false
+          "done": true
         },
         {
           "text": "今天晚上跟Hank拿交付檔",
